@@ -259,6 +259,7 @@ namespace Neurolution.Managers
 
         public void SaveTexture(Texture2D texture)
         {
+            if (!Directory.Exists("Screenshots")) Directory.CreateDirectory("Screenshots");
             var stream =
                 File.OpenWrite(GameSettings.GameDirectory + "\\Screenshots\\Screenshot " +
                                String.Format("{0:dd-MM-yyyy HH-mm-ss}", DateTime.Now) + ".png");

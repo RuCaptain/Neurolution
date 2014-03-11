@@ -121,9 +121,9 @@ namespace Neurolution
             CreatureSniffRange = config.GetFloat("Creature", "SniffRange", 4f);
             FoodSatiety = config.GetFloat("Creature", "FoodSatiety", 12.5f);
 
-            NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.00005f);
-            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.052f);
-            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.015f);
+            NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.00001f);
+            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.048f);
+            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.02f);
             NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.1f);
             NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1f);
 
