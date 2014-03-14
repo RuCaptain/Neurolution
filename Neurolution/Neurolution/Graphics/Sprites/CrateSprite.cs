@@ -9,12 +9,12 @@ namespace Neurolution.Graphics.Sprites
     {
         public CrateSprite(IEnumerable<Texture2D> textures) : base(textures){}
 
-        protected override int AngleRange
+        public override int AngleRange
         {
             get { return 90; }
         }
 
-        protected override float ObjectSize
+        public override float ObjectSize
         {
             get { return 200f; }
         }

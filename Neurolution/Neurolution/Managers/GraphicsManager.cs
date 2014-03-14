@@ -158,8 +158,8 @@ namespace Neurolution.Managers
         {
             var transformedPos = Utils.TransformCoordinates(position);
             sprite.Update(position, rotation);
-            SpriteBatch.Draw(sprite.CurrentTexture(), transformedPos, null, color * opacity, 0f, Utils.TextureOrigin(sprite), scale,
-                SpriteEffects.None, Utils.RenderDepth(transformedPos, sprite.CurrentTexture().Height));
+            SpriteBatch.Draw(sprite.Texture(), transformedPos, null, color * opacity, 0f, Utils.TextureOrigin(sprite), scale,
+                SpriteEffects.None, Utils.RenderDepth(transformedPos, sprite.Texture().Height));
         }
 
         public void DrawTexture(Texture2D texture, Vector2 position, float layerDepth)

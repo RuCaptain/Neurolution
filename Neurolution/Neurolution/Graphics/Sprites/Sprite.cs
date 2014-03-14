@@ -15,8 +15,8 @@ namespace Neurolution.Graphics.Sprites
     public abstract class Sprite
     {
         protected readonly Texture2D[] Textures;
-        protected abstract int AngleRange { get; }
-        protected abstract float ObjectSize { get; }
+        public abstract int AngleRange { get; }
+        public abstract float ObjectSize { get; }
         protected Texture2D CurrentTexture;
 
         public Vector2 Position = new Vector2();
@@ -41,6 +41,11 @@ namespace Neurolution.Graphics.Sprites
         public static Color AverageColor()
         {
             return Color.Black;  //Zero values (0, 0, 0) will not impact on the ANN.
+        }
+
+        public Texture2D Texture()
+        {
+            return CurrentTexture;
         }
 
     }

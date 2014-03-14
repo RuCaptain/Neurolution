@@ -18,18 +18,18 @@ namespace Neurolution
 
 
         //GraphicsDeviceManager is required for graphics initization.
-        public readonly GraphicsDeviceManager Graphics;
+        protected readonly GraphicsDeviceManager Graphics;
 
         //You can find description of managers below in their files
-        public ScreenManager ScreenManager;
-        public ControlsManager ControlsManager;
-        public GraphicsManager GraphicsManager;
-        public MenuManager MenuManager;
-        public WorldManager WorldManager;
-        public List<IManager> Managers = new List<IManager>();
+        protected ScreenManager ScreenManager;
+        protected ControlsManager ControlsManager;
+        protected GraphicsManager GraphicsManager;
+        protected MenuManager MenuManager;
+        protected WorldManager WorldManager;
+        protected List<IManager> Managers = new List<IManager>();
 
         //Used for methods that require GameTime instance and not called from Update() or Draw()
-        public GameTime LastGameTime;
+        protected GameTime LastGameTime;
 
 
         
@@ -49,7 +49,7 @@ namespace Neurolution
         //Classes below called from XNA base classes.
         //It was made for logical isolation of the game functions from framework methods
 
-        public void GameInitialize()
+        protected void GameInitialize()
         {
             //Loading configuration from file...
             var config = new Configuration(GameSettings.ConfigurationFile);
@@ -65,7 +65,7 @@ namespace Neurolution
             Managers.Add(WorldManager = new WorldManager());
         }
 
-        public void GameLoadContent()
+        protected void GameLoadContent()
         {
             //Post-initization (e.g. loading game content)
             var spriteFactory = new SpriteFactory(GraphicsManager);
@@ -88,13 +88,13 @@ namespace Neurolution
         }
 
 
-        public void GameUpdate(GameTime gameTime)
+        protected void GameUpdate(GameTime gameTime)
         {
             ScreenManager.Update(gameTime);
             ControlsManager.Update(gameTime);
         }
 
-        public void GameDraw()
+        protected void GameDraw()
         {
             GraphicsManager.Clear();
             ScreenManager.Draw(LastGameTime);
@@ -102,7 +102,7 @@ namespace Neurolution
 
 
         //Updating background in GameMenu
-        public void UpdateMenuBackground()
+        protected void UpdateMenuBackground()
         {
             if (MenuManager.CurrentMenuName() != "gamemenu") return;
             var background = GraphicsManager.GameScreenshot(0.5f);
@@ -116,7 +116,7 @@ namespace Neurolution
         }
 
         //Processing requests
-        public void PerformAction(string action, List<object> parameters, GameTime gameTime)
+        protected void PerformAction(string action, List<object> parameters, GameTime gameTime)
         {
             switch (action)
             {

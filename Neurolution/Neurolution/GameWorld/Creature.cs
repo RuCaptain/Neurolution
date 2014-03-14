@@ -97,7 +97,7 @@ namespace Neurolution.GameWorld
             _maxSpeed = GameSettings.CreatureMovingSpeed/size;
             _maxRotatingSpeed = GameSettings.CreatureRotatingSpeed/size;
             _breedingEnergy = GameSettings.CreatureBreedingEnergy*size;
-            _maxSmellDistance = ConvertUnits.ToSimUnits(GameSettings.CreatureSpriteSize*
+            _maxSmellDistance = ConvertUnits.ToSimUnits(CurrentSprite.ObjectSize*
                                                          size*GameSettings.CreatureSniffRange);
 
             //Initizating the network layer
@@ -112,9 +112,9 @@ namespace Neurolution.GameWorld
 
             //Creating a claws
             _claws = FixtureFactory.AttachCircle(
-                ConvertUnits.ToSimUnits(GameSettings.CreatureSpriteSize*
+                ConvertUnits.ToSimUnits(CurrentSprite.ObjectSize*
                                         size*GameSettings.ClawsSize), 1f, Body,
-                ConvertUnits.ToSimUnits(new Vector2(GameSettings.CreatureSpriteSize * size * (1 - GameSettings.ClawsSize/3), 0)), "creature");
+                ConvertUnits.ToSimUnits(new Vector2(CurrentSprite.ObjectSize * size * (1 - GameSettings.ClawsSize/3), 0)), "creature");
             _claws.CollidesWith = Category.All;
             _claws.OnCollision = BodyOnOnCollision;
             Body.Rotation = rotation;

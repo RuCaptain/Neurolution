@@ -11,12 +11,12 @@ namespace Neurolution.Graphics.Sprites
         {
         }
 
-        protected override int AngleRange
+        public override int AngleRange
         {
             get { return 360; }
         }
 
-        protected override float ObjectSize
+        public override float ObjectSize
         {
             get { return 140f; }
         }

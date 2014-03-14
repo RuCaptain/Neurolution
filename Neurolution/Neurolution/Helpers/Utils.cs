@@ -41,7 +41,7 @@ namespace Neurolution.Helpers
 
         public static Vector2 TextureOrigin(Sprite sprite)
         {
-            return new Vector2(sprite.CurrentTexture().Width/2f, sprite.CurrentTexture().Height/2f);
+            return new Vector2(sprite.Texture().Width/2f, sprite.Texture().Height/2f);
         }
 
         //Converts angle to it's vector

@@ -9,12 +9,12 @@ namespace Neurolution.Graphics.Sprites
     {
         public CreatureAttackSprite(IEnumerable<Texture2D> textures) : base(textures) {}
 
-        protected override int AngleRange
+        public override int AngleRange
         {
-            get { return 90; }
+            get { return 360; }
         }
 
-        protected override float ObjectSize
+        public override float ObjectSize
         {
             get { return 145f; }
         }
