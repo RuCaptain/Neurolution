@@ -8,7 +8,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
-using Neurolution.Graphics;
+using Neurolution.Graphics.Sprites;
 using Neurolution.Helpers;
 using RecurrentNetworkLibrary;
 

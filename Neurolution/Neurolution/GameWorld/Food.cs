@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Neurolution.Graphics;
+using Neurolution.Graphics.Sprites;
 
 namespace Neurolution.GameWorld
 {

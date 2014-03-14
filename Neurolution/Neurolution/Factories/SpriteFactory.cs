@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Xna.Framework.Graphics;
-using Neurolution.Graphics;
+using Neurolution.Graphics.Sprites;
 using Neurolution.Managers;
 
 namespace Neurolution.Factories
@@ -25,32 +25,32 @@ namespace Neurolution.Factories
 
         public Sprite CreateCreatureSprite()
         {
-            var textures = GetTextures("SpriteCreature1", 12);
-            var sprite = new Sprite(360, GameSettings.CreatureSpriteSize, textures);
+            var textures = GetTextures(CreatureStandSprite.TextureName, CreatureStandSprite.TexturesCount);
+            var sprite = new CreatureStandSprite(textures);
 
             return sprite;
         }
 
         public Sprite CreateCreatureAttackSprite()
         {
-            var textures = GetTextures("SpriteCreature2", 12);
-            var sprite = new Sprite(360, GameSettings.CreatureSpriteSize, textures);
+            var textures = GetTextures(CreatureAttackSprite.TextureName, CreatureAttackSprite.TexturesCount);
+            var sprite = new CreatureAttackSprite(textures);
 
             return sprite;
         }
 
         public Sprite CreateFoodSprite()
         {
-            var textures = GetTextures("SpriteMeat", 6);
-            var sprite = new Sprite(360, GameSettings.FoodSpriteSize, textures);
+            var textures = GetTextures(FoodSprite.TextureName, FoodSprite.TexturesCount);
+            var sprite = new FoodSprite(textures);
 
             return sprite;
         }
 
         public Sprite CreateCrateSprite()
         {
-            var textures = GetTextures("SpriteCrate", 6);
-            var sprite = new Sprite(90, GameSettings.CrateSpriteSize, textures);
+            var textures = GetTextures(CrateSprite.TextureName, CrateSprite.TexturesCount);
+            var sprite = new CrateSprite(textures);
 
             return sprite;
         }

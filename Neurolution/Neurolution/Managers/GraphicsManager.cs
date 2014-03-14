@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Neurolution.Controls;
 using Neurolution.GameWorld;
 using Neurolution.Graphics;
+using Neurolution.Graphics.Sprites;
 using Neurolution.Helpers;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keys = Microsoft.Xna.Framework.Input.Keys;

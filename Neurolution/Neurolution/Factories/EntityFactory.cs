@@ -4,7 +4,7 @@ using System.Linq;
 using FarseerPhysics;
 using Microsoft.Xna.Framework;
 using Neurolution.GameWorld;
-using Neurolution.Graphics;
+using Neurolution.Graphics.Sprites;
 using Neurolution.Helpers;
 using Neurolution.Managers;
 using RecurrentNetworkLibrary;

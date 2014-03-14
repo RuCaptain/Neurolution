@@ -121,6 +121,10 @@
     <Compile Include="Graphics\BasicPainter.cs" />
     <Compile Include="Factories\SpriteFactory.cs" />
     <Compile Include="Graphics\MenuPainter.cs" />
+    <Compile Include="Graphics\Sprites\CrateSprite.cs" />
+    <Compile Include="Graphics\Sprites\CreatureAttackSprite.cs" />
+    <Compile Include="Graphics\Sprites\CreatureStandSprite.cs" />
+    <Compile Include="Graphics\Sprites\FoodSprite.cs" />
     <Compile Include="Graphics\WorldPainter.cs" />
     <Compile Include="Helpers\Configuration.cs" />
     <Compile Include="Controls\IControlsObserver.cs" />
@@ -129,7 +133,7 @@
     <Compile Include="Helpers\IActionObserver.cs" />
     <Compile Include="Helpers\IActionObservable.cs" />
     <Compile Include="Graphics\Painter.cs" />
-    <Compile Include="Graphics\Sprite.cs" />
+    <Compile Include="Graphics\Sprites\Sprite.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Managers\ControlsManager.cs" />
     <Compile Include="Graphics\Camera2D.cs" />

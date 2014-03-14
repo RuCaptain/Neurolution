@@ -5,7 +5,7 @@ using System.IO;
 using FarseerPhysics;
 using Microsoft.Xna.Framework;
 using Neurolution.GameWorld;
-using Neurolution.Graphics;
+using Neurolution.Graphics.Sprites;
 
 namespace Neurolution.Helpers
 {
