@@ -61,11 +61,12 @@ namespace Neurolution.GameWorld
         
         //Data of last watching
         private int _currentLookingDirection;
-        private List<float> _lookDistance = new List<float> {0, 0, 0, 0, 0};
-        private List<float> _lookSize = new List<float> { 0, 0, 0, 0, 0 };
-        private List<float> _lookSpeed = new List<float> { 0, 0, 0, 0, 0 };
-        private List<float> _lookSpace = new List<float> { 0, 0, 0, 0, 0};
-        private List<float> _lookRotation = new List<float>{0, 0, 0, 0, 0}; 
+        private List<float> _lookDistance;
+        private List<float> _lookSize;
+        private List<float> _lookSpeed;
+        private List<float> _lookSpace;
+        private List<float> _lookRotation;
+        private List<Color> _lookColor;
         private Vector2 _lookDirection;
         private float _smellFoodDistance;
         private float _smellCreatureDistance;
@@ -362,11 +363,12 @@ namespace Neurolution.GameWorld
         {
             //Raytracing in 5 directions (from -40 to 40 degrees)
 
-            _lookDistance = _lookDistance.Select(s => 0f).ToList();
-            _lookSize = _lookSize.Select(s => 0f).ToList();
-            _lookSpeed = _lookSpeed.Select(s => 0f).ToList();
-            _lookSpace = _lookSpace.Select(s => 0f).ToList();
-            _lookRotation = _lookRotation.Select(s => 0f).ToList();
+            _lookDistance = Utils.InitList(0f, 5);
+            _lookSize = Utils.InitList(0f, 5);
+            _lookSpeed = Utils.InitList(0f, 5);
+            _lookSpace = Utils.InitList(0f, 5);
+            _lookRotation = Utils.InitList(0f, 5);
+            _lookColor = Utils.InitList(Color.Black, 5);
 
             //left 40
             _currentLookingDirection = 0;
@@ -408,7 +410,7 @@ namespace Neurolution.GameWorld
             if ((string)fixture.Body.UserData == "food" && !WorldProxy.EntityExists(fixture.Body)) return -1;
 
             _lookDistance[_currentLookingDirection] = Utils.GetDistance(_facePosition, point) / GameSettings.CreatureLookRange;
-
+            
             var entity = WorldProxy.GetEntityInfo(fixture.Body);
             
             if (_maxSize < entity.Size)
@@ -419,6 +421,7 @@ namespace Neurolution.GameWorld
             _lookSize[_currentLookingDirection] = entity.Size / _maxSize;
             _lookRotation[_currentLookingDirection] = Math.Abs(fixture.Body.Rotation - Utils.GetAimingAngle(point, Body.Position)) / MathHelper.ToRadians(180);
             _lookSpeed[_currentLookingDirection] = entity.Speed/_maxTargetSpeed;
+            _lookColor[_currentLookingDirection] = entity.AverageColor;
 
 
             return fraction;
@@ -570,6 +573,9 @@ namespace Neurolution.GameWorld
                 inputSensors.Add(_lookSize[i]);
                 inputSensors.Add(_lookSpace[i]);
                 inputSensors.Add(_lookSpeed[i]);
+                inputSensors.Add(_lookColor[i].R/255f);
+                inputSensors.Add(_lookColor[i].G/255f);
+                inputSensors.Add(_lookColor[i].B/255f);
             } 
 
             //amplifying sensors inputs

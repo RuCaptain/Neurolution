@@ -31,7 +31,8 @@ namespace Neurolution.GameWorld
                 Position = target.Body.Position,
                 Rotation = target.Body.Rotation,
                 Size = target.Size,
-                Speed = target.GetSpeed()
+                Speed = target.GetSpeed(),
+                AverageColor = target.CurrentSprite.AverageColor
             };
         }
         public EntityInfo GetEntityInfo(Body targetBody)

@@ -10,5 +10,6 @@ namespace Neurolution.GameWorld
         public float Size = 0f;
         public string Name = "";
         public float Speed = 0f;
+        public Color AverageColor = Color.Black;
     }
 }

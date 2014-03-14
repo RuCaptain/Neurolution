@@ -17,6 +17,7 @@ namespace Neurolution.Graphics.Sprites
         protected readonly Texture2D[] Textures;
         public abstract int AngleRange { get; }
         public abstract float ObjectSize { get; }
+        public abstract Color AverageColor { get; }
         protected Texture2D CurrentTexture;
 
         public Vector2 Position = new Vector2();
@@ -35,12 +36,6 @@ namespace Neurolution.Graphics.Sprites
             var angle = Utils.Normalize(MathHelper.ToDegrees(Rotation), AngleRange);
             var angleInterval = AngleRange/Textures.Length;
             CurrentTexture = Textures[(int) Math.Ceiling(angle/angleInterval) - 1];
-        }
-
-
-        public static Color AverageColor()
-        {
-            return Color.Black;  //Zero values (0, 0, 0) will not impact on the ANN.
         }
 
         public Texture2D Texture()

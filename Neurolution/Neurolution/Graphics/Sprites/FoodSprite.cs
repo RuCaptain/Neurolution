@@ -21,9 +21,12 @@ namespace Neurolution.Graphics.Sprites
             get { return 140f; }
         }
 
-        public static new Color AverageColor()
+        public override Color AverageColor
         {
-            return new Color(255, 0, 0);
+            get
+            {
+                return new Color(255, 0, 0);
+            }
         }
 
         public static String TextureName

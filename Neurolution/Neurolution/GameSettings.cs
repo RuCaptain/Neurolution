@@ -59,7 +59,7 @@ namespace Neurolution
         public static float NetworkRandomSpread;
         public static float NetworkSensorsAmplifier;
 
-        public const int NetworkInputs = 33;
+        public const int NetworkInputs = 48;
         public const int NetworkOutputs = 8;
         public const int NetworkHiddenLayers = 1;
 

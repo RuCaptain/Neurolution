@@ -146,5 +146,13 @@ namespace Neurolution.Helpers
         {
             return Math.Max(min, Math.Min(max, value));
         }
+
+        public static List<T> InitList<T>(T defaultValue, int capacity)
+        {
+            var list = new List<T>();
+            for(var i=0; i < capacity; i++)
+                list.Add(defaultValue);
+            return list;
+        }
     }
 }
