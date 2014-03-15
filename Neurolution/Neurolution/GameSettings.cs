@@ -59,6 +59,7 @@ namespace Neurolution
         public static float NetworkRandomSpread;
         public static float NetworkSensorsAmplifier;
         public static float NetworkThreshold;
+        public static float NetworkDamageLearningRateAmplifier;
 
         public const int NetworkInputs = 48;
         public const int NetworkOutputs = 8;
@@ -125,6 +126,7 @@ namespace Neurolution
             NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.1f);
             NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1.2f);
             NetworkThreshold = config.GetFloat("Network", "Threshold", 2.2f);
+            NetworkDamageLearningRateAmplifier = config.GetFloat("Network", "DamageLearningRateAmplifier", 2f);
 
         }
     }

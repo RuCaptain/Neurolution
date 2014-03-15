@@ -23,7 +23,7 @@
         public void Backpropagate(bool isPositive, float learningRate)
         {
             //Recalculating weight
-            var k = 1 - Weight / (1 - learningRate);
+            var k = 1 - learningRate;
             if (isPositive) k = 1/k;
             Weight = NetworkUtils.Range(Weight*k, 0.001f, 0.999f);
 

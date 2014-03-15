@@ -333,13 +333,13 @@ namespace Neurolution.GameWorld
                 if (_maxDamage < damage)
                     _maxDamage = damage;
                 _attackedDamage = damage / _maxDamage;
-                Push(-8f / Size);
+                Push(-GameSettings.CreatureMovingSpeed * 2 / Size);
             }
             if (Health <= 0)
             {
                 WorldProxy.Kill(this);
             }
-            _neuralNetwork.Learn(false, GameSettings.NetworkLearningRate * _attackedDamage);
+            _neuralNetwork.Learn(false, GameSettings.NetworkLearningRate * _attackedDamage * GameSettings.NetworkDamageLearningRateAmplifier);
 
         }
 
