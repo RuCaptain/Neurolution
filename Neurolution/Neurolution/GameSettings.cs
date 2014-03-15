@@ -93,14 +93,14 @@ namespace Neurolution
         //Loading configuration from file
         public static void Load(Configuration config)
         {
-            WorldWidth = config.GetInt("World", "WorldWidth", 96);
-            WorldHeight = config.GetInt("World", "WorldHeight", 96);
+            WorldWidth = config.GetInt("World", "WorldWidth", 80);
+            WorldHeight = config.GetInt("World", "WorldHeight", 80);
             Borders = new Rectangle(-WorldWidth * TileHeight / 2, -WorldHeight * TileHeight / 2,
             WorldWidth * TileHeight, WorldHeight * TileHeight);
 
-            InitCreatures = config.GetInt("World", "InitCreatures", 25);
-            InitFood = config.GetInt("World", "InitFood", 300);
-            CrateCount = config.GetInt("World", "CrateCount", 20);
+            InitCreatures = config.GetInt("World", "InitCreatures", 15);
+            InitFood = config.GetInt("World", "InitFood", 400);
+            CrateCount = config.GetInt("World", "CrateCount", 15);
             CrateSizeMin = config.GetInt("World", "CrateSizeMin", 10)/10f;
             CrateSizeMax = config.GetInt("World", "CrateSizeMax", 30)/10f;
 
@@ -121,12 +121,12 @@ namespace Neurolution
             FoodSatiety = config.GetFloat("Creature", "FoodSatiety", 12.5f);
 
             NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.01f);
-            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.105f);
-            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.15f);
-            NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.1f);
+            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.125f);
+            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.005f);
+            NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.05f);
             NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1.2f);
-            NetworkThreshold = config.GetFloat("Network", "Threshold", 2.2f);
-            NetworkDamageLearningRateAmplifier = config.GetFloat("Network", "DamageLearningRateAmplifier", 2f);
+            NetworkThreshold = config.GetFloat("Network", "Threshold", 2.8f);
+            NetworkDamageLearningRateAmplifier = config.GetFloat("Network", "DamageLearningRateAmplifier", 6f);
 
         }
     }
