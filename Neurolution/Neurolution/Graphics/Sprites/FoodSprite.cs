@@ -18,7 +18,7 @@ namespace Neurolution.Graphics.Sprites
 
         public override float ObjectSize
         {
-            get { return 140f; }
+            get { return 120f; }
         }
 
         public override Color AverageColor

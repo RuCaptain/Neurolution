@@ -54,7 +54,8 @@ namespace Neurolution.GameWorld
         private int _childrenToSpawn;
 
         private int _idleTimer;
-        private float _maxDamage;
+        private float _maxDamage = GameSettings.CreatureAttackDamage;
+        private float _maxSatiety = GameSettings.FoodSatiety;
         private float _attackedDamage;
         private int _damageTimer;
         private int _hungerDamageTimer;
@@ -74,7 +75,7 @@ namespace Neurolution.GameWorld
 
         //Using for comparing the own and target's parameters
         private float _maxSize = 1f;
-        private float _maxTargetSpeed = 1f;
+        private float _maxTargetSpeed = GameSettings.CreatureMovingSpeed;
 
         private readonly float _maxSmellDistance;
 
@@ -317,7 +318,9 @@ namespace Neurolution.GameWorld
                 ProcessBreedingEnergy();
             }
             else _satiety = _satiety + foodSatiety;
-            _neuralNetwork.Learn(true);
+            if (foodSatiety > _maxSatiety) _maxSatiety = foodSatiety;
+
+            _neuralNetwork.Learn(true, GameSettings.NetworkLearningRate * foodSatiety / _maxSatiety);
         }
 
         private void Damage(float damage, bool attacked = false)
@@ -336,7 +339,7 @@ namespace Neurolution.GameWorld
             {
                 WorldProxy.Kill(this);
             }
-            _neuralNetwork.Learn(false);
+            _neuralNetwork.Learn(false, GameSettings.NetworkLearningRate * _attackedDamage);
 
         }
 

@@ -84,7 +84,7 @@ namespace Neurolution
         public const int HealthBarWidth = 100;
         public const int HealthBarHeight = 20;
 
-        public const float ClawsSize = 0.55f;
+        public const float ClawsSize = 0.6f;
         public const float FoodSize = 1.2f;
         public const float FoodSizeSpread = 0.3f;
 
