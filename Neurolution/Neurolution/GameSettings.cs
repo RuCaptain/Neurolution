@@ -58,6 +58,7 @@ namespace Neurolution
         public static float NetworkLearningRate;
         public static float NetworkRandomSpread;
         public static float NetworkSensorsAmplifier;
+        public static float NetworkThreshold;
 
         public const int NetworkInputs = 48;
         public const int NetworkOutputs = 8;
@@ -79,7 +80,7 @@ namespace Neurolution
             0.005f  //run
         };
 
-        public const int SpeedScrollMax = 30;
+        public const int SpeedScrollMax = 50;
         public const int SpeedScrollMin = 20;
         public const int HealthBarWidth = 100;
         public const int HealthBarHeight = 20;
@@ -112,17 +113,18 @@ namespace Neurolution
             CreatureBreedingEnergy = config.GetFloat("Creature", "BreedingEnergy", 100f);
             CreatureBreedingTimer = config.GetFloat("Creature", "BreedingTimer", 0.01f);
             CreatureAttackDamage = config.GetFloat("Creature", "AttackDamage", 25f);
-            CreatureHungerDamage = config.GetFloat("Creature", "HungerDamage", 10f);
-            CreatureHungerDamageInterval = config.GetInt("Creature", "HungerDamageInterval", 100);
+            CreatureHungerDamage = config.GetFloat("Creature", "HungerDamage", 5f);
+            CreatureHungerDamageInterval = config.GetInt("Creature", "HungerDamageInterval", 80);
             CreatureLookRange = config.GetFloat("Creature", "LookRange", 8f);
             CreatureSniffRange = config.GetFloat("Creature", "SniffRange", 4f);
             FoodSatiety = config.GetFloat("Creature", "FoodSatiety", 12.5f);
 
-            NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.00001f);
-            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.048f);
-            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.02f);
+            NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.01f);
+            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.105f);
+            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.15f);
             NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.1f);
-            NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1f);
+            NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1.2f);
+            NetworkThreshold = config.GetFloat("Network", "Threshold", 2.2f);
 
         }
     }

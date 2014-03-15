@@ -103,13 +103,13 @@ namespace Neurolution.GameWorld
                                                          size*GameSettings.CreatureSniffRange);
 
             //Initizating the network layer
-            _neuralNetwork = new RecurrentNetwork(GameSettings.NetworkInputs, GameSettings.NetworkOutputs, GameSettings.NetworkHiddenLayers);
+            _neuralNetwork = new RecurrentNetwork(GameSettings.NetworkInputs, GameSettings.NetworkOutputs, GameSettings.NetworkHiddenLayers,
+                NetworkUtils.RandomSpread(GameSettings.NetworkThreshold, GameSettings.NetworkRandomSpread));
             _neuralNetwork.Layers[1 + GameSettings.NetworkHiddenLayers].RecurrentLayer = null;
             _neuralNetwork.Layers[2 + GameSettings.NetworkHiddenLayers].OutputLayer = _neuralNetwork.Layers[GameSettings.NetworkHiddenLayers];
             _neuralNetwork.Layers[GameSettings.NetworkHiddenLayers].RecurrentLayer = _neuralNetwork.Layers[2 + GameSettings.NetworkHiddenLayers];
             _neuralNetwork.Initialize(GameSettings.NetworkInitMinValue, GameSettings.NetworkInitMaxValue);
             _neuralNetwork.LearningRate = NetworkUtils.RandomSpread(GameSettings.NetworkLearningRate, GameSettings.NetworkRandomSpread);
-
             Body.Rotation = 0;
 
             //Creating a claws

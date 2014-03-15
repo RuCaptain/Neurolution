@@ -15,7 +15,7 @@ namespace RecurrentNetworkLibrary
         private List<float> _lastOutputs;
         private bool _isInitialized;
 
-        public RecurrentNetwork(int inputNeuronsCount, int outputNeuronsCount, int hiddenLayersCount)
+        public RecurrentNetwork(int inputNeuronsCount, int outputNeuronsCount, int hiddenLayersCount, float threshold = 0.5f)
         {
             //Initizating input layer
             _inputLayer = new Layer(inputNeuronsCount, new LinearFunction(), null, null);
@@ -30,7 +30,7 @@ namespace RecurrentNetworkLibrary
             }
 
             //Initizating output layer
-            _outputLayer = new Layer(outputNeuronsCount, new ThresholdFunction(), Layers.Last(), null);
+            _outputLayer = new Layer(outputNeuronsCount, new ThresholdFunction(threshold), Layers.Last(), null);
             Layers.Last().SetOutputLayer(_outputLayer);
             Layers.Add(_outputLayer);
 
