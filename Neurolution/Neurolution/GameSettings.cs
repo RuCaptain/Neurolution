@@ -16,7 +16,7 @@ namespace Neurolution
 
         public const int TileHeight = 172;
         public const int PositionIterations = 50;
-        public const float DefaultZoom = 0.2f;
+        public const float DefaultZoom = 0.05f;
         public const bool DisplayCursor = true;
 
         public static readonly string GameDirectory =
@@ -64,6 +64,7 @@ namespace Neurolution
         public const int NetworkInputs = 48;
         public const int NetworkOutputs = 8;
         public const int NetworkHiddenLayers = 1;
+        public const int NetworkHiddenNeurons = NetworkInputs/2;
 
         public static readonly float[] LossOfEnergy =
         {
@@ -81,26 +82,26 @@ namespace Neurolution
             0.005f  //run
         };
 
-        public const int SpeedScrollMax = 50;
-        public const int SpeedScrollMin = 20;
+        public const int SpeedScrollMax = 60;
+        public const int SpeedScrollMin = 30;
         public const int HealthBarWidth = 100;
         public const int HealthBarHeight = 20;
 
-        public const float ClawsSize = 0.6f;
+        public const float ClawsSize = 0.5f;
         public const float FoodSize = 1.2f;
         public const float FoodSizeSpread = 0.3f;
 
         //Loading configuration from file
         public static void Load(Configuration config)
         {
-            WorldWidth = config.GetInt("World", "WorldWidth", 80);
-            WorldHeight = config.GetInt("World", "WorldHeight", 80);
+            WorldWidth = config.GetInt("World", "WorldWidth", 120);
+            WorldHeight = config.GetInt("World", "WorldHeight", 120);
             Borders = new Rectangle(-WorldWidth * TileHeight / 2, -WorldHeight * TileHeight / 2,
             WorldWidth * TileHeight, WorldHeight * TileHeight);
 
-            InitCreatures = config.GetInt("World", "InitCreatures", 15);
-            InitFood = config.GetInt("World", "InitFood", 400);
-            CrateCount = config.GetInt("World", "CrateCount", 15);
+            InitCreatures = config.GetInt("World", "InitCreatures", 30);
+            InitFood = config.GetInt("World", "InitFood", 300);
+            CrateCount = config.GetInt("World", "CrateCount", 20);
             CrateSizeMin = config.GetInt("World", "CrateSizeMin", 10)/10f;
             CrateSizeMax = config.GetInt("World", "CrateSizeMax", 30)/10f;
 
@@ -109,8 +110,8 @@ namespace Neurolution
             CreatureChildrenMin = config.GetInt("Creature", "ChildrenMin", 1);
             CreatureChildrenMax = config.GetInt("Creature", "ChildrenMax", 4);
             CreatureLootCount = config.GetInt("Creature", "LootCount", 4);
-            CreatureMovingSpeed = config.GetFloat("Creature", "MovingSpeed", 8f);
-            CreatureRotatingSpeed = config.GetFloat("Creature", "RotatingSpeed", 2f);
+            CreatureMovingSpeed = config.GetFloat("Creature", "MovingSpeed", 12f);
+            CreatureRotatingSpeed = config.GetFloat("Creature", "RotatingSpeed", 3f);
             CreatureBreedingEnergy = config.GetFloat("Creature", "BreedingEnergy", 100f);
             CreatureBreedingTimer = config.GetFloat("Creature", "BreedingTimer", 0.01f);
             CreatureAttackDamage = config.GetFloat("Creature", "AttackDamage", 25f);
@@ -120,13 +121,13 @@ namespace Neurolution
             CreatureSniffRange = config.GetFloat("Creature", "SniffRange", 4f);
             FoodSatiety = config.GetFloat("Creature", "FoodSatiety", 12.5f);
 
-            NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.01f);
-            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.125f);
-            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.005f);
-            NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.05f);
-            NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1.2f);
-            NetworkThreshold = config.GetFloat("Network", "Threshold", 2.8f);
-            NetworkDamageLearningRateAmplifier = config.GetFloat("Network", "DamageLearningRateAmplifier", 6f);
+            NetworkInitMinValue = config.GetFloat("Network", "InitMinValue", 0.015f);
+            NetworkInitMaxValue = config.GetFloat("Network", "InitMaxValue", 0.05f);
+            NetworkLearningRate = config.GetFloat("Network", "LearningRate", 0.01f);
+            NetworkRandomSpread = config.GetFloat("Network", "RandomSpread", 0.01f);
+            NetworkSensorsAmplifier = config.GetFloat("Network", "SensorsAmplifier", 1f);
+            NetworkThreshold = config.GetFloat("Network", "Threshold", 0.45f);
+            NetworkDamageLearningRateAmplifier = config.GetFloat("Network", "DamageLearningRateAmplifier", 2f);
 
         }
     }

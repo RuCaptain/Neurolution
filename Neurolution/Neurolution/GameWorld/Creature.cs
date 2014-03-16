@@ -103,7 +103,8 @@ namespace Neurolution.GameWorld
                                                          size*GameSettings.CreatureSniffRange);
 
             //Initizating the network layer
-            _neuralNetwork = new RecurrentNetwork(GameSettings.NetworkInputs, GameSettings.NetworkOutputs, GameSettings.NetworkHiddenLayers,
+            _neuralNetwork = new RecurrentNetwork(GameSettings.NetworkInputs, GameSettings.NetworkOutputs,
+                GameSettings.NetworkHiddenLayers, GameSettings.NetworkHiddenNeurons,
                 NetworkUtils.RandomSpread(GameSettings.NetworkThreshold, GameSettings.NetworkRandomSpread));
             _neuralNetwork.Layers[1 + GameSettings.NetworkHiddenLayers].RecurrentLayer = null;
             _neuralNetwork.Layers[2 + GameSettings.NetworkHiddenLayers].OutputLayer = _neuralNetwork.Layers[GameSettings.NetworkHiddenLayers];
@@ -116,7 +117,7 @@ namespace Neurolution.GameWorld
             _claws = FixtureFactory.AttachCircle(
                 ConvertUnits.ToSimUnits(CurrentSprite.ObjectSize*
                                         size*GameSettings.ClawsSize), 1f, Body,
-                ConvertUnits.ToSimUnits(new Vector2(CurrentSprite.ObjectSize * size * (1 - GameSettings.ClawsSize/3), 0)), "creature");
+                ConvertUnits.ToSimUnits(new Vector2(CurrentSprite.ObjectSize * size * (1 - GameSettings.ClawsSize/4), 0)), "creature");
             _claws.CollidesWith = Category.All;
             _claws.OnCollision = BodyOnOnCollision;
             Body.Rotation = rotation;
@@ -135,7 +136,7 @@ namespace Neurolution.GameWorld
                     return true;
 
                 WorldProxy.DamageEntity(fixtureB.Body, GameSettings.CreatureAttackDamage*Size);
-                Push(-5f/Size);
+                Push(-GameSettings.CreatureMovingSpeed * 2 / Size);
             }
             else if ((string) fixtureB.Body.UserData == "food")
             {
@@ -179,7 +180,7 @@ namespace Neurolution.GameWorld
                 Move(_acceleration);
                 _acceleration *= 0.92f;
             }
-            else if (_acceleration > 0) _acceleration = 0;
+            else _acceleration = 0;
 
             ProcessActions();
         }

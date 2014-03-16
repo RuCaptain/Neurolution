@@ -22,8 +22,8 @@ namespace Neurolution.Screens
         public GameScreen(Camera2D camera)
         {
             _camera = camera;
-            _zoomMin = _camera.Zoom/4f;
-            _zoomMax = _camera.Zoom*4f;
+            _zoomMin = _camera.Zoom;
+            _zoomMax = _camera.Zoom*8f;
         }
 
         public string GetName()

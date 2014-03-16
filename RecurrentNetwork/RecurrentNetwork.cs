@@ -20,7 +20,7 @@ namespace RecurrentNetworkLibrary
         private float _endRange;
         private readonly List<float> _memory = new List<float>(); 
 
-        public RecurrentNetwork(int inputNeuronsCount, int outputNeuronsCount, int hiddenLayersCount, float threshold = 0.5f)
+        public RecurrentNetwork(int inputNeuronsCount, int outputNeuronsCount, int hiddenLayersCount, int hiddenNeuronsCount, float threshold = 0.5f)
         {
             //Initizating input layer
             _inputLayer = new Layer(inputNeuronsCount, new LinearFunction(), null, null);
@@ -30,7 +30,7 @@ namespace RecurrentNetworkLibrary
             var hiddenLayers = new List<Layer>();
             for (var i = 0; i < hiddenLayersCount; i++)
             {
-                var hiddenLayer = new Layer(inputNeuronsCount, new SigmoidFunction(), Layers.Last(), null);
+                var hiddenLayer = new Layer(hiddenNeuronsCount, new SigmoidFunction(), Layers.Last(), null);
                 Layers.Last().SetOutputLayer(hiddenLayer);
                 hiddenLayers.Add(hiddenLayer);
             }
@@ -42,7 +42,7 @@ namespace RecurrentNetworkLibrary
             Layers.Add(_outputLayer);
 
             //Initizating recurrent layer
-            _recurrentLayer = new Layer(0, new SigmoidFunction(), null, hiddenLayers[0]);
+            _recurrentLayer = new Layer(0, new LinearFunction(), null, hiddenLayers[0]);
             hiddenLayers[0].SetRecurrentLayer(_recurrentLayer);
             Layers.Add(_recurrentLayer);
 
@@ -91,21 +91,17 @@ namespace RecurrentNetworkLibrary
         //Learning network
         public void Learn(bool isPositive)
         {
-            foreach (var neuron in _outputLayer.Neurons)
-            {
-                var positive = neuron.Output >= 1.0f;
-                var list = neuron.SourceSynapses.Concat(neuron.RecurrentSynapses).ToList();
-                foreach(var synapse in list)
-                    synapse.Backpropagate(!(positive ^ isPositive), LearningRate);
-            }
+            Learn(isPositive, LearningRate);
         }
 
         //Learning with specified rate
         public void Learn(bool isPositive, float learningRate)
         {
-            foreach (var neuron in _outputLayer.Neurons)
+            if (_lastOutputs == null) return;
+            for(var i=0; i < _lastOutputs.Count; i++)
             {
-                var positive = neuron.Output >= 1.0f;
+                var neuron = _outputLayer.Neurons[i];
+                var positive = _lastOutputs[i] >= 1.0f;
                 var list = neuron.SourceSynapses.Concat(neuron.RecurrentSynapses).ToList();
                 foreach (var synapse in list)
                     synapse.Backpropagate(!(positive ^ isPositive), learningRate);
@@ -127,11 +123,11 @@ namespace RecurrentNetworkLibrary
                     var neuron = newNeurons[i];
                     var inputNeuron = _inputLayer.Neurons[i];
                     for (var j = 0; j < inputNeuron.DestinationSynapses.Count; j++)
-                        neuron.DestinationSynapses[j].Weight = inputNeuron.DestinationSynapses[j].Weight/2f;
+                        neuron.DestinationSynapses[j].Weight = inputNeuron.DestinationSynapses[j].Weight;
                 }
 
                 _recurrentLayer.AddNeurons(_outputLayer.NeuronCount,
-                    _startRange, _endRange/2f);
+                    _startRange, _endRange);
 
             if(_memory.Count >= count * MemorySize)
                 _memory.RemoveRange(0, count);

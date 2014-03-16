@@ -14,7 +14,7 @@ namespace RecurrentNetworkLibrary.ActivationFunctions
 
         public float Calculate(float value, float parameter)
         {
-            return Calculate(value);
+            return 1f / (1 + (float)Math.Exp(Math.E * parameter * (-value + 0.5f)));
         }
     }
 }

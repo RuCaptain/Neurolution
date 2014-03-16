@@ -1,4 +1,6 @@
-﻿namespace RecurrentNetworkLibrary
+﻿using RecurrentNetworkLibrary.ActivationFunctions;
+
+namespace RecurrentNetworkLibrary
 {
     public class Synapse
     {
@@ -25,7 +27,7 @@
             //Recalculating weight
             var k = 1 - learningRate;
             if (isPositive) k = 1/k;
-            Weight = NetworkUtils.Range(Weight*k, 0.001f, 0.999f);
+            Weight = NetworkUtils.Range(Weight*k, 0.01f, 0.99f);
 
             //Backpropagating source synapses
             foreach(var synapse in SourceNeuron.SourceSynapses)
