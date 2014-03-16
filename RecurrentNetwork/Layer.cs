@@ -5,7 +5,7 @@ using RecurrentNetworkLibrary.ActivationFunctions;
 
 namespace RecurrentNetworkLibrary
 {
-    //Neuron layer contains neurons and may be connected with 
+    //Neuron layer contains neurons and may be connected with other ones
     public class Layer
     {
         public List<Neuron> Neurons = new List<Neuron>();
@@ -56,54 +56,71 @@ namespace RecurrentNetworkLibrary
             IsRecurrent = (InputLayer == null && OutputLayer != null && OutputLayer.RecurrentLayer != null);
         }
 
-
-        //Connection own neurons with ones in connected layers
-        public void Initialize(float startRange, float endRange)
+        //Connecting own neurons with ones in connected layers
+        public void Initialize(List<Neuron> neurons, float startRange, float endRange)
         {
+            if (OutputLayer == null) return;
+            foreach (var neuron in neurons)
+                foreach (var outputNeuron in OutputLayer.Neurons)
+                {
+                    var synapse = new Synapse(neuron, outputNeuron,
+                        NetworkUtils.RandomRange(startRange, endRange));
+                    neuron.DestinationSynapses.Add(synapse);
 
-            if (InputLayer != null)
-                foreach(var inputNeuron in InputLayer.Neurons)
-                    foreach(var neuron in Neurons)
-                        neuron.SourceSynapses.Add(new Synapse(inputNeuron, neuron,
-                            NetworkUtils.RandomRange(startRange, endRange)));
+                    if (IsRecurrent)
+                        outputNeuron.RecurrentSynapses.Add(synapse);
+                    else 
+                        outputNeuron.SourceSynapses.Add(synapse);
 
-            if (OutputLayer != null)
-            foreach(var neuron in Neurons)
-                foreach(var outputNeuron in OutputLayer.Neurons)
-                    neuron.DestinationSynapses.Add(new Synapse(neuron, outputNeuron,
-                        NetworkUtils.RandomRange(startRange, endRange)));
-
-            if (RecurrentLayer == null) return;
-            foreach (var inputNeuron in RecurrentLayer.Neurons)
-                foreach(var neuron in Neurons)
-                    neuron.RecurrentSynapses.Add(new Synapse(inputNeuron, neuron,
-                        NetworkUtils.RandomRange(startRange, endRange)));
+                }
         }
 
+        public void Initialize(float startRange, float endRange)
+        {
+            Initialize(Neurons, startRange, endRange);
+        }
+
+
         //Running own neurons and next layer (if it exists)
-        public void Run(bool activate, bool recurrently = false)
+        public void Run(bool activate, bool runOnce = false)
         {
             foreach(var neuron in Neurons)
-                neuron.Run(activate, recurrently);
+                neuron.Run(IsRecurrent || activate, runOnce);
 
-            if (OutputLayer == null) return;
-
-            OutputLayer.Run(OutputLayer.RecurrentLayer != null ? recurrently : activate, recurrently);
+            if (OutputLayer == null || (!IsRecurrent && runOnce)) return;
+                OutputLayer.Run(activate, runOnce);
         }
 
         //Setting inputs (only in input and recurrent layers)
         public void SetInputs(List<float> inputs)
         {
-            if(inputs.Count != NeuronCount)
+            if(inputs.Count != Neurons.Count)
                 throw new Exception("Inputs count must be same as neurons count.");
 
-            for (var i = 0; i < NeuronCount; i++)
+            for (var i = 0; i < Neurons.Count; i++)
                 Neurons[i].Input = inputs[i];
         }
 
         public List<float> GetOutputs()
         {
             return Neurons.Select(neuron => neuron.Output).ToList();
+        }
+
+        public List<Neuron> AddNeurons(int count, float startRange, float endRange)
+        {
+            var newNeurons = new List<Neuron>();
+
+            for (var i = 0; i < count; i++)
+                newNeurons.Add(new Neuron(this));
+
+            Initialize(newNeurons, startRange, endRange);
+            Neurons.AddRange(newNeurons);
+
+            return newNeurons;
+        }
+        public List<Neuron> AddNeurons(int count)
+        {
+            return AddNeurons(count, 0f, 0f);
         }
 
     }

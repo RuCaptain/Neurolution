@@ -17,16 +17,16 @@ namespace RecurrentNetworkLibrary
         }
 
         //Gathering power of previous layer and calculation own power
-        public void Run(bool activate, bool recurrently)
+        public void Run(bool activate, bool runOnce)
         {
-            var synapseList = recurrently ? RecurrentSynapses : SourceSynapses;
+            var synapseList = runOnce ? RecurrentSynapses : SourceSynapses;
             if(synapseList.Count > 0)
             {
-                if(!recurrently || _parent.IsRecurrent)Input = 0f;
+                if(!runOnce) Input = 0f;
                 foreach (var synapse in synapseList)
                     synapse.Propagate();
             }
-            if(activate) Output = _parent.ActivationFunction.Calculate(Input);
+            Output = activate ? _parent.ActivationFunction.Calculate(Input) : Input;
         }
     }
 }
