@@ -9,6 +9,7 @@ namespace RecurrentNetworkLibrary
     {
         public List<Layer> Layers = new List<Layer>();
         public float LearningRate = 0.2f;
+        public float EvaluationFactor = 0.1f;
         public int MemorySize = 10;
         private readonly Layer _inputLayer;
         private readonly Layer _outputLayer;
@@ -20,7 +21,7 @@ namespace RecurrentNetworkLibrary
         private float _endRange;
         private readonly List<float> _memory = new List<float>(); 
 
-        public RecurrentNetwork(int inputNeuronsCount, int outputNeuronsCount, int hiddenLayersCount, int hiddenNeuronsCount, float threshold = 0.5f)
+        public RecurrentNetwork(int inputNeuronsCount, int outputNeuronsCount, int hiddenLayersCount, int hiddenNeuronsCount)
         {
             //Initizating input layer
             _inputLayer = new Layer(inputNeuronsCount, new LinearFunction(), null, null);
@@ -37,7 +38,7 @@ namespace RecurrentNetworkLibrary
             Layers.AddRange(hiddenLayers);
 
             //Initizating output layer
-            _outputLayer = new Layer(outputNeuronsCount, new ThresholdFunction(threshold), Layers.Last(), null);
+            _outputLayer = new Layer(outputNeuronsCount, new SigmoidFunction(), Layers.Last(), null);
             Layers.Last().SetOutputLayer(_outputLayer);
             Layers.Add(_outputLayer);
 
@@ -59,7 +60,7 @@ namespace RecurrentNetworkLibrary
         }
 
         //Running network
-        public IEnumerable<float> Run(IEnumerable<float> inputs)
+        public IEnumerable<float> Run(IEnumerable<float> inputs, bool doRemember = true)
         {
             if (!_isInitialized)
                 throw new Exception("Network must be initialized.");
@@ -83,7 +84,7 @@ namespace RecurrentNetworkLibrary
             {
                 var firstRun = _lastOutputs == null;
                 _lastOutputs = _outputLayer.GetOutputs();
-                if(!firstRun) Remember();
+                if(!firstRun && doRemember) Remember();
             }
             return _lastOutputs;
         }
@@ -97,16 +98,36 @@ namespace RecurrentNetworkLibrary
         //Learning with specified rate
         public void Learn(bool isPositive, float learningRate)
         {
-            if (_lastOutputs == null) return;
-            for(var i=0; i < _lastOutputs.Count; i++)
+            if (_memory.Count == 0) return;
+
+            var inputsCount = _inputLayer.NeuronCount;
+            var outputsCount = _outputLayer.NeuronCount;
+            var count = inputsCount + outputsCount;
+
+            for (var i = 0; i < _memory.Count; i += count)
             {
-                var neuron = _outputLayer.Neurons[i];
-                var positive = _lastOutputs[i] >= 1.0f;
-                var list = neuron.SourceSynapses.Concat(neuron.RecurrentSynapses).ToList();
-                foreach (var synapse in list)
-                    synapse.Backpropagate(!(positive ^ isPositive), learningRate);
+                var inputs = _memory.GetRange(i, count - outputsCount);
+                var outputs = _memory.GetRange(i + inputsCount, outputsCount);
+                if(!isPositive)outputs = outputs.Select(s => 1 - s).ToList();
+
+                TrainNetwork(learningRate, inputs, outputs);
             }
-            Remember();
+
+            _memory.Clear();
+        }
+
+        private void TrainNetwork( float learningRate, IEnumerable<float> inputs, List<float> outputs)
+        {
+            Run(inputs, false);
+            
+            _outputLayer.SetErrors(outputs);
+            _outputLayer.EvaluateErrors();
+            
+            foreach (var layer in Layers)
+                layer.Learn(learningRate);
+
+            foreach (var layer in Layers)
+                layer.CleanErrors();
         }
 
         public void Remember()
@@ -115,7 +136,7 @@ namespace RecurrentNetworkLibrary
             var count = _inputLayer.NeuronCount + _outputLayer.NeuronCount;
 
             if (_recurrentLayer.Neurons.Count >= count*MemorySize) return;
-
+            
                 var newNeurons = _recurrentLayer.AddNeurons(_inputLayer.NeuronCount);
 
                 for (var i = 0; i < _inputLayer.NeuronCount; i++)
@@ -123,8 +144,9 @@ namespace RecurrentNetworkLibrary
                     var neuron = newNeurons[i];
                     var inputNeuron = _inputLayer.Neurons[i];
                     for (var j = 0; j < inputNeuron.DestinationSynapses.Count; j++)
-                        neuron.DestinationSynapses[j].Weight = inputNeuron.DestinationSynapses[j].Weight;
+                        neuron.DestinationSynapses[j].Weight = inputNeuron.DestinationSynapses[j].Weight/2f;
                 }
+            
 
                 _recurrentLayer.AddNeurons(_outputLayer.NeuronCount,
                     _startRange, _endRange);

@@ -11,5 +11,10 @@
         {
             return value;
         }
+
+        public float Derivative(float value)
+        {
+            return 1;
+        }
     }
 }

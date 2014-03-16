@@ -20,15 +20,16 @@
         }
 
         //Primitive verion of backpropagation algorithm
-        public void Backpropagate()
+        public void Backpropagate(bool isPositive, float learningRate)
         {
-            SourceNeuron.Error += DestinationNeuron.Error*Weight;
-        }
+            //Recalculating weight
+            var k = 1 - Weight / (1 - learningRate);
+            if (isPositive) k = 1/k;
+            Weight = NetworkUtils.Range(Weight*k, 0.001f, 0.999f);
 
-        public void OptimizeWeight(float learningRate)
-        {
-            var delta = learningRate*DestinationNeuron.Error*SourceNeuron.Output;
-            Weight += delta;
+            //Backpropagating source synapses
+            foreach(var synapse in SourceNeuron.SourceSynapses)
+                synapse.Backpropagate(isPositive, learningRate);
         }
     }
 }

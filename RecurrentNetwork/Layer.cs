@@ -95,9 +95,13 @@ namespace RecurrentNetworkLibrary
         public void SetInputs(List<float> inputs)
         {
             if(inputs.Count != Neurons.Count)
-                throw new Exception("Inputs count must be same as neurons count.");
+                if(IsRecurrent)
+                    Neurons.ForEach(a => a.Input = 0);
+                else
+                    throw new Exception("Inputs count must be same as neurons count.");
 
-            for (var i = 0; i < Neurons.Count; i++)
+
+            for (var i = 0; i < inputs.Count; i++)
                 Neurons[i].Input = inputs[i];
         }
 
@@ -123,5 +127,37 @@ namespace RecurrentNetworkLibrary
             return AddNeurons(count, 0f, 0f);
         }
 
+        public void SetErrors(List<float> expectedOutputs)
+        {
+            if(expectedOutputs.Count != NeuronCount)
+                throw new Exception("Outputs count must be same as neurons count.");
+
+
+            for (var i = 0; i < NeuronCount; i++)
+                Neurons[i].Error = expectedOutputs[i] - Neurons[i].Output;
+            
+        }
+
+        public void CleanErrors()
+        {
+            foreach (var neuron in Neurons)
+                neuron.Error = 0f;
+        }
+
+        public void EvaluateErrors()
+        {
+            foreach (var neuron in Neurons)
+                neuron.EvaluateError();
+            if(InputLayer != null)
+                InputLayer.EvaluateErrors();
+            if(RecurrentLayer != null)
+                RecurrentLayer.EvaluateErrors();
+        }
+
+        public void Learn(float learningRate)
+        {
+            foreach(var neuron in Neurons)
+                neuron.Learn(learningRate);
+        }
     }
 }

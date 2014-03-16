@@ -21,5 +21,10 @@
         {
             return (value >= parameter) ? 1 : 0;
         }
+
+        public float Derivative(float value)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

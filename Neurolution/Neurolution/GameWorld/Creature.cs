@@ -43,6 +43,7 @@ namespace Neurolution.GameWorld
         private readonly int _generation;
 
         private readonly RecurrentNetwork _neuralNetwork;
+        private readonly float _networkThreshold;
 
         //Life parameters
         private float _satiety = 100f;
@@ -104,13 +105,14 @@ namespace Neurolution.GameWorld
 
             //Initizating the network layer
             _neuralNetwork = new RecurrentNetwork(GameSettings.NetworkInputs, GameSettings.NetworkOutputs,
-                GameSettings.NetworkHiddenLayers, GameSettings.NetworkHiddenNeurons,
-                NetworkUtils.RandomSpread(GameSettings.NetworkThreshold, GameSettings.NetworkRandomSpread));
+                GameSettings.NetworkHiddenLayers, GameSettings.NetworkHiddenNeurons);
             _neuralNetwork.Layers[1 + GameSettings.NetworkHiddenLayers].RecurrentLayer = null;
             _neuralNetwork.Layers[2 + GameSettings.NetworkHiddenLayers].OutputLayer = _neuralNetwork.Layers[GameSettings.NetworkHiddenLayers];
             _neuralNetwork.Layers[GameSettings.NetworkHiddenLayers].RecurrentLayer = _neuralNetwork.Layers[2 + GameSettings.NetworkHiddenLayers];
             _neuralNetwork.Initialize(GameSettings.NetworkInitMinValue, GameSettings.NetworkInitMaxValue);
             _neuralNetwork.LearningRate = NetworkUtils.RandomSpread(GameSettings.NetworkLearningRate, GameSettings.NetworkRandomSpread);
+            _networkThreshold = Utils.RandomSpread(GameSettings.NetworkThreshold, GameSettings.NetworkRandomSpread);
+
             Body.Rotation = 0;
 
             //Creating a claws
@@ -178,7 +180,7 @@ namespace Neurolution.GameWorld
             if (Math.Abs(_acceleration) >= 0.4f)
             {
                 Move(_acceleration);
-                _acceleration *= 0.92f;
+                _acceleration *= 0.95f;
             }
             else _acceleration = 0;
 
@@ -334,7 +336,7 @@ namespace Neurolution.GameWorld
                 if (_maxDamage < damage)
                     _maxDamage = damage;
                 _attackedDamage = damage / _maxDamage;
-                Push(-GameSettings.CreatureMovingSpeed * 2 / Size);
+                //Push(-GameSettings.CreatureMovingSpeed * 2 / Size);
             }
             if (Health <= 0)
             {
@@ -589,14 +591,14 @@ namespace Neurolution.GameWorld
             var outputs = _neuralNetwork.Run(inputs).ToArray();
 
             //processing recieved information
-            _actions[CreatureActions.MoveForward] = outputs[0] >= 1;
-            _actions[CreatureActions.MoveBackward] = outputs[1] >= 1;
-            _actions[CreatureActions.RotateLeft] = outputs[2] >= 1;
-            _actions[CreatureActions.RotateRight] = outputs[3] >= 1;
-            _actions[CreatureActions.Run] = outputs[4] >= 1;
-            _actions[CreatureActions.StrafeLeft] = outputs[5] >= 1;
-            _actions[CreatureActions.StrafeRight] = outputs[6] >= 1;
-            _actions[CreatureActions.Attack] = outputs[7] >= 1;
+            _actions[CreatureActions.MoveForward] = outputs[0] >= _networkThreshold;
+            _actions[CreatureActions.MoveBackward] = outputs[1] >= _networkThreshold;
+            _actions[CreatureActions.RotateLeft] = outputs[2] >= _networkThreshold;
+            _actions[CreatureActions.RotateRight] = outputs[3] >= _networkThreshold;
+            _actions[CreatureActions.Run] = outputs[4] >= _networkThreshold;
+            _actions[CreatureActions.StrafeLeft] = outputs[5] >= _networkThreshold;
+            _actions[CreatureActions.StrafeRight] = outputs[6] >= _networkThreshold;
+            _actions[CreatureActions.Attack] = outputs[7] >= _networkThreshold;
 
         }
 

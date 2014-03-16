@@ -9,6 +9,7 @@ namespace RecurrentNetworkLibrary
         public List<Synapse> RecurrentSynapses = new List<Synapse>(); 
         public float Input;
         public float Output;
+        public float Error;
         private readonly Layer _parent;
 
         public Neuron(Layer parent)
@@ -27,6 +28,20 @@ namespace RecurrentNetworkLibrary
                     synapse.Propagate();
             }
             Output = activate ? _parent.ActivationFunction.Calculate(Input) : Input;
+        }
+
+        public void EvaluateError()
+        {
+            Error *= _parent.ActivationFunction.Derivative(Output);
+            if (SourceSynapses.Count <= 0) return;
+            foreach(var synapse in SourceSynapses)
+                synapse.Backpropagate();
+        }
+
+        public void Learn(float learningRate)
+        {
+            foreach(var synapse in SourceSynapses)
+                synapse.OptimizeWeight(learningRate);
         }
     }
 }
